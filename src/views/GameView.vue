@@ -1,5 +1,7 @@
 <script lang="ts">
 import TableComp from '@/components/TableComponent.vue';
+import { defineComponent } from 'vue';
+import { usePlayerStore } from '@/stores/player';
 
 class Spelare {
     public name: string;
@@ -7,17 +9,33 @@ class Spelare {
     
     constructor(name: string) {
         this.name = name;
-        this.score = [];
+        this.score = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    }
+
+    public addScore(score: number) {
+        //this.score[]
     }
 }
 
-export default {
+export default defineComponent({
+    setup() {
+       const playerStore = usePlayerStore();
+
+       function addPlayer(player: string) {
+           playerStore.addPlayer(player);
+       }
+
+       return {
+           playerArray: playerStore.players,
+           addPlayer,
+       }
+    },
     data() {
         return {
             rollsRemaining: 3,
             rolls: [1,1,1,1,1],
             spelare: [],
-            name: [],
+            names: [],
         }
     },
     components: {
@@ -35,24 +53,25 @@ export default {
             --this.rollsRemaining;
             return this.rolls;
         },
-        createPlayer(name: string) {
+        createPlayers() {
             /*let player = new Spelare(name);
             player.score = [0,0,0,0,0,0,0,0,0,0,0,0];*/
-            this.name.forEach(element => {
-                this.spelare.push(new Spelare(element));
-                console.log(element)
+            this.names.forEach((name: string) => {
+                this.addPlayer(new Spelare(name));
+                console.log(name)
                 console.log(this.spelare)    
             });
             
             //return player;
         },
     }
-}
+})
 
 </script>
 
 <template>
     <main>
+        <h3>{{playerArray}}</h3>
         <button>Regler</button>
         <button>Poäng</button><br>
         <button>{{rolls[0]}}</button>
@@ -63,11 +82,11 @@ export default {
         <button v-on:click="playerRoll()" :disabled="rollsRemaining<1">Kasta Tärning</button>
         <div>{{rolls}}</div>
         <div>Number of turns left: {{rollsRemaining}}</div>
-        <button>Avsluta runda</button><br>
-        <input type="text" v-model="name[0]">
-        <input type="text" v-model="name[1]">
-        <input type="text" v-model="name[2]">
-        <button v-on:click="createPlayer()">Lägg till spelare</button>
+        <button v-on:click="rollsRemaining=3">Avsluta runda</button><br>
+        <input type="text" v-model="names[0]">
+        <input type="text" v-model="names[1]">
+        <input type="text" v-model="names[2]">
+        <button v-on:click="createPlayers()">Lägg till spelare</button>
         <TableComp/>
     </main>
 </template>
