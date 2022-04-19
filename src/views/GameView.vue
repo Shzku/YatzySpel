@@ -1,11 +1,27 @@
 <script lang="ts">
+import TableComp from '@/components/TableComponent.vue';
+
+class Spelare {
+    public name: string;
+    public score: Array<number>;
+    
+    constructor(name: string) {
+        this.name = name;
+        this.score = [];
+    }
+}
 
 export default {
     data() {
         return {
             rollsRemaining: 3,
             rolls: [1,1,1,1,1],
+            spelare: [],
+            name: [],
         }
+    },
+    components: {
+        TableComp,
     },
     methods: {
         diceRoll() {
@@ -18,7 +34,18 @@ export default {
             }
             --this.rollsRemaining;
             return this.rolls;
-        }
+        },
+        createPlayer(name: string) {
+            /*let player = new Spelare(name);
+            player.score = [0,0,0,0,0,0,0,0,0,0,0,0];*/
+            this.name.forEach(element => {
+                this.spelare.push(new Spelare(element));
+                console.log(element)
+                console.log(this.spelare)    
+            });
+            
+            //return player;
+        },
     }
 }
 
@@ -36,5 +63,19 @@ export default {
         <button v-on:click="playerRoll()" :disabled="rollsRemaining<1">Kasta Tärning</button>
         <div>{{rolls}}</div>
         <div>Number of turns left: {{rollsRemaining}}</div>
+        <button>Avsluta runda</button><br>
+        <input type="text" v-model="name[0]">
+        <input type="text" v-model="name[1]">
+        <input type="text" v-model="name[2]">
+        <button v-on:click="createPlayer()">Lägg till spelare</button>
+        <TableComp/>
     </main>
 </template>
+
+<style>
+
+table, tr, td {
+    border: 1px black solid;
+}
+
+</style>
