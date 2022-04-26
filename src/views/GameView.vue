@@ -2,68 +2,70 @@
 import TableComp from '@/components/TableComponent.vue';
 import { defineComponent } from 'vue';
 import { usePlayerStore } from '@/stores/player';
+import DiceComponent from '@/components/DiceComponent.vue';
 
 class Spelare {
     public name: string;
     public score: Array<number>;
-    
+
     constructor(name: string) {
         this.name = name;
         this.score = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    }
-
-    public addScore(score: number) {
-        //this.score[]
     }
 }
 
 export default defineComponent({
     setup() {
-       const playerStore = usePlayerStore();
+        const playerStore = usePlayerStore();
 
-       function addPlayer(player: string) {
-           playerStore.addPlayer(player);
-       }
+        function addPlayer(player: string) {
+            playerStore.addPlayer(player);
+        }
 
-       return {
-           playerArray: playerStore.players,
-           addPlayer,
-       }
+        function clearPlayers() {
+            playerStore.clearPlayers();
+        }
+
+        function getPlayers() {
+            return playerStore.getPlayers();
+        }
+
+        return {
+            playerArray: playerStore.players,
+            addPlayer,
+            clearPlayers,
+            getPlayers,
+        }
     },
     data() {
         return {
             rollsRemaining: 3,
-            rolls: [1,1,1,1,1],
-            spelare: [],
             names: [],
+            playerCount: 1,
         }
     },
     components: {
         TableComp,
+        DiceComponent
     },
     methods: {
-        diceRoll() {
-            return Math.floor(Math.random() * 6) + 1;
-        },
-        playerRoll() : number[] {
-            this.rolls = [];
-            for (let i = 0; i < 5; i++) {
-                this.rolls.push(this.diceRoll());
-            }
+        playerRoll() {
+            var allDice = [this.$refs.dice1, this.$refs.dice2, this.$refs.dice3, this.$refs.dice4, this.$refs.dice5];
+            allDice.forEach(die => {
+                die.diceRoll();
+            });
             --this.rollsRemaining;
-            return this.rolls;
         },
         createPlayers() {
-            /*let player = new Spelare(name);
-            player.score = [0,0,0,0,0,0,0,0,0,0,0,0];*/
+            this.clearPlayers();
+            let createdUsers = 0;
             this.names.forEach((name: string) => {
+                if (createdUsers>=this.playerCount) return;
                 this.addPlayer(new Spelare(name));
                 console.log(name)
-                console.log(this.spelare)    
+                createdUsers++;
             });
-            
-            //return player;
-        },
+        }
     }
 })
 
@@ -71,30 +73,41 @@ export default defineComponent({
 
 <template>
     <main>
-        <h3>{{playerArray}}</h3>
+        <h3>{{ playerArray }}</h3>
         <button>Regler</button>
         <button>Poäng</button><br>
-        <button>{{rolls[0]}}</button>
-        <button>{{rolls[1]}}</button>
-        <button>{{rolls[2]}}</button>
-        <button>{{rolls[3]}}</button>
-        <button>{{rolls[4]}}</button><br>
-        <button v-on:click="playerRoll()" :disabled="rollsRemaining<1">Kasta Tärning</button>
-        <div>{{rolls}}</div>
-        <div>Number of turns left: {{rollsRemaining}}</div>
-        <button v-on:click="rollsRemaining=3">Avsluta runda</button><br>
-        <input type="text" v-model="names[0]">
-        <input type="text" v-model="names[1]">
-        <input type="text" v-model="names[2]">
+        <DiceComponent ref="dice1" />
+        <DiceComponent ref="dice2" />
+        <DiceComponent ref="dice3" />
+        <DiceComponent ref="dice4" />
+        <DiceComponent ref="dice5" />
+        <br>
+        <button v-on:click="playerRoll()" :disabled="rollsRemaining < 1">Kasta Tärning</button>
+        <div>Number of throws left: {{ rollsRemaining }}</div>
+        <button v-on:click="rollsRemaining = 3">Avsluta runda</button><br>
+        <button v-on:click="playerCount = 1">1</button>
+        <button v-on:click="playerCount = 2">2</button>
+        <button v-on:click="playerCount = 3">3</button>
+        <button v-on:click="playerCount = 4">4</button><br>
+        <div>{{playerCount}}</div>
+        <input v-if="0 < playerCount" type="text" v-model="names[0]">
+        <input v-if="1 < playerCount" type="text" v-model="names[1]">
+        <input v-if="2 < playerCount" type="text" v-model="names[2]">
+        <input v-if="3 < playerCount" type="text" v-model="names[3]">
         <button v-on:click="createPlayers()">Lägg till spelare</button>
-        <TableComp/>
+        <div>{{ names }}</div>
+        <TableComp />
+        
+        <div >
+            <input type="text" />
+        </div>
     </main>
 </template>
 
 <style>
-
-table, tr, td {
+table,
+tr,
+td {
     border: 1px black solid;
 }
-
 </style>

@@ -10,6 +10,9 @@ export const usePlayerStore = defineStore({
     actions: {
         addPlayer(player: string) {
             this.players.push(player);
+        },
+        clearPlayers() {
+            this.players.length = 0;
         }
     },
     getters: {
