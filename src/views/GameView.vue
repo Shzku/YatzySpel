@@ -7,10 +7,12 @@ import DiceComponent from '@/components/DiceComponent.vue';
 class Spelare {
     public name: string;
     public score: Array<number>;
+    public selectScore: Array<number>;
 
     constructor(name: string) {
         this.name = name;
-        this.score = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        this.score = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        this.selectScore = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     }
 }
 
@@ -42,6 +44,8 @@ export default defineComponent({
             rollsRemaining: 3,
             names: [],
             playerCount: 1,
+            currentDice: [0, 0, 0, 0, 0, 0],
+            currentPlayer: 0,
         }
     },
     components: {
@@ -49,12 +53,25 @@ export default defineComponent({
         DiceComponent
     },
     methods: {
+        countDice(dice: Array<any>) {
+            this.currentDice = [0, 0, 0, 0, 0, 0];
+            let count = 0;
+            dice.forEach(die => {
+                console.log(die.rolledNumber)
+                this.currentDice[die.rolledNumber-1]++;
+            });
+            console.log(count)
+            this.playerArray[this.currentPlayer].selectScore = this.currentDice;
+            console.log(this.currentDice)
+            return count;
+        },
         playerRoll() {
             var allDice = [this.$refs.dice1, this.$refs.dice2, this.$refs.dice3, this.$refs.dice4, this.$refs.dice5];
             allDice.forEach(die => {
                 die.diceRoll();
             });
             --this.rollsRemaining;
+            this.countDice(allDice);
         },
         createPlayers() {
             this.clearPlayers();
@@ -82,7 +99,7 @@ export default defineComponent({
         <DiceComponent ref="dice4" />
         <DiceComponent ref="dice5" />
         <br>
-        <button v-on:click="playerRoll()" :disabled="rollsRemaining < 1">Kasta Tärning</button>
+        <button v-on:click="playerRoll()" :disabled="rollsRemaining < 1 || playerArray.length < 1">Kasta Tärning</button>
         <div>Number of throws left: {{ rollsRemaining }}</div>
         <button v-on:click="rollsRemaining = 3">Avsluta runda</button><br>
         <button v-on:click="playerCount = 1">1</button>
