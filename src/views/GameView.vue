@@ -6,13 +6,13 @@ import DiceComponent from '@/components/DiceComponent.vue';
 
 class Spelare {
     public name: string;
-    public score: Array<number>;
-    public selectScore: Array<number>;
+    public score: Array<number|null>;
+    public selectScore: Array<number|null>;
 
     constructor(name: string) {
         this.name = name;
-        this.score = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        this.selectScore = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        this.score = [null, null, null, null, null, null, 0, null, null, null, null, null, null, null, null, null, null, 0];
+        this.selectScore = [null, null, null, null, null, null, null, null, null, null, null];
     }
 }
 
@@ -28,15 +28,24 @@ export default defineComponent({
             playerStore.clearPlayers();
         }
 
+        function throwDice() {
+            playerStore.throwDice();
+        }
+
+        function increment() {
+            playerStore.increment();
+        }
         function getPlayers() {
             return playerStore.getPlayers();
         }
 
         return {
             playerArray: playerStore.players,
+            playerThrows: playerStore.throwsLeft,
             addPlayer,
             clearPlayers,
             getPlayers,
+            throwDice,
         }
     },
     data() {
@@ -61,7 +70,14 @@ export default defineComponent({
                 this.currentDice[die.rolledNumber-1]++;
             });
             console.log(count)
-            this.playerArray[this.currentPlayer].selectScore = this.currentDice;
+            let i = 0
+            this.currentDice.forEach(die => {
+                if (i >= 7) return;
+                this.playerArray[this.currentPlayer].selectScore[i] = die * (i + 1);
+                console.log(i);
+                i++
+            });
+            //this.playerArray[this.currentPlayer].selectScore = this.currentDice;
             console.log(this.currentDice)
             return count;
         },
@@ -70,7 +86,8 @@ export default defineComponent({
             allDice.forEach(die => {
                 die.diceRoll();
             });
-            --this.rollsRemaining;
+            //--this.rollsRemaining;
+            this.playerThrows--;
             this.countDice(allDice);
         },
         createPlayers() {
@@ -99,9 +116,9 @@ export default defineComponent({
         <DiceComponent ref="dice4" />
         <DiceComponent ref="dice5" />
         <br>
-        <button v-on:click="playerRoll()" :disabled="rollsRemaining < 1 || playerArray.length < 1">Kasta Tärning</button>
-        <div>Number of throws left: {{ rollsRemaining }}</div>
-        <button v-on:click="rollsRemaining = 3">Avsluta runda</button><br>
+        <button v-on:click="playerRoll()" :disabled="playerThrows < 1 || playerArray.length < 1">Kasta Tärning</button>
+        <div>Number of throws left: {{ playerThrows }}</div>
+        <button v-on:click="playerThrows = 3">Avsluta runda</button><br>
         <button v-on:click="playerCount = 1">1</button>
         <button v-on:click="playerCount = 2">2</button>
         <button v-on:click="playerCount = 3">3</button>
