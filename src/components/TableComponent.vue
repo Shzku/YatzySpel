@@ -1,5 +1,6 @@
 <script lang="ts">
 import { usePlayerStore } from "@/stores/player"
+import { storeToRefs } from "pinia";
 
 
 export default {
@@ -14,9 +15,14 @@ export default {
             return playerStore.getThrows();
         }
 
+        const { currentPlayer, throwsLeft } = storeToRefs(playerStore);
+
         return {
+            playerStore,
             playerArray: playerStore.players,
             playerThrows: playerStore.throwsLeft,
+            currentPlayer,
+            throwsLeft,
             getPlayers,
             getThrows,
         }
@@ -27,8 +33,14 @@ export default {
     },
     methods: {
         addChosenPoints(pointIndex: number) {
-            console.log(this.playerThrows)
-            //this.playerArray[this.currentPlayer].score[pointIndex] = this.playerArray[this.currentPlayer].selectScore[pointIndex];
+            //console.log(this.playerThrows)
+            this.playerArray[this.currentPlayer].score[pointIndex] = this.playerArray[this.currentPlayer].selectScore[pointIndex];
+            this.playerArray[this.currentPlayer].selectScore = [null, null, null, null, null, null];
+            this.throwsLeft = 3;
+            this.currentPlayer++;
+            if (this.currentPlayer >= this.playerArray.length) {
+                this.currentPlayer = 0;
+            }
         }
     },
 }
@@ -43,43 +55,49 @@ export default {
         <tr>
             <td>Ettor</td>
             <td v-for="player in playerArray">
-                <button v-on:click="addChosenPoints(0)" v-if="!player.score[0] && playerThrows < 3">{{player.selectScore[0]}}</button>
-                <div v-else>{{player.score[0]}}</div>
+                <div v-if="player.score[0] != null">{{player.score[0]}}</div>
+                <button v-on:click="addChosenPoints(0)" v-else-if="player.selectScore[0] != null">{{player.selectScore[0]}}</button>
+                <br v-else/>
             </td>
         </tr>
         <tr>
             <td>Tvåor</td>
             <td v-for="player in playerArray">
-                <button v-on:click="addChosenPoints(1)" v-if="!player.score[1]">{{player.selectScore[1]}}</button>
-                <div v-else>{{player.score[1]}}</div>
+                <div v-if="player.score[1] != null">{{player.score[1]}}</div>
+                <button v-on:click="addChosenPoints(1)" v-else-if="player.selectScore[1] != null">{{player.selectScore[1]}}</button>
+                <br v-else/>
             </td>
         </tr>
         <tr>
             <td>Treor</td>
             <td v-for="player in playerArray">
-                <button v-on:click="addChosenPoints(2)" v-if="player.selectScore[2] && !player.score[2]">{{player.selectScore[2]}}</button>
-                <div v-else>{{player.selectScore[2]}}</div>
+                <div v-if="player.score[2] != null">{{player.score[2]}}</div>
+                <button v-on:click="addChosenPoints(2)" v-else-if="player.selectScore[2] != null">{{player.selectScore[2]}}</button>
+                <br v-else/>
             </td>
         </tr>
         <tr>
             <td>Fyror</td>
             <td v-for="player in playerArray">
-                <button v-on:click="addChosenPoints(3)" v-if="player.selectScore[3] && !player.score[3]">{{player.selectScore[3]}}</button>
-                <div v-else>{{player.selectScore[3]}}</div>
+                <div v-if="player.score[3] != null">{{player.score[3]}}</div>
+                <button v-on:click="addChosenPoints(3)" v-else-if="player.selectScore[3] != null">{{player.selectScore[3]}}</button>
+                <br v-else/>
             </td>
         </tr>
         <tr>
             <td>Femmor</td>
             <td v-for="player in playerArray">
-                <button v-on:click="addChosenPoints(4)" v-if="player.selectScore[4] && !player.score[4]">{{player.selectScore[4]}}</button>
-                <div v-else>{{player.selectScore[4]}}</div>
+                <div v-if="player.score[4] != null">{{player.score[4]}}</div>
+                <button v-on:click="addChosenPoints(4)" v-else-if="player.selectScore[4] != null">{{player.selectScore[4]}}</button>
+                <br v-else/>
             </td>
         </tr>
         <tr>
             <td>Sexor</td>
             <td v-for="player in playerArray">
-                <button v-on:click="addChosenPoints(5)" v-if="player.selectScore[5] && !player.score[5]">{{player.selectScore[5]}}</button>
-                <div v-else>{{player.selectScore[5]}}</div>
+                <div v-if="player.score[5] != null">{{player.score[5]}}</div>
+                <button v-on:click="addChosenPoints(5)" v-else-if="player.selectScore[5] != null">{{player.selectScore[5]}}</button>
+                <br v-else/>
             </td>
         </tr>
         <tr>

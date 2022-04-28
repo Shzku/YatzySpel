@@ -3,6 +3,7 @@ import TableComp from '@/components/TableComponent.vue';
 import { defineComponent } from 'vue';
 import { usePlayerStore } from '@/stores/player';
 import DiceComponent from '@/components/DiceComponent.vue';
+import { storeToRefs } from 'pinia';
 
 class Spelare {
     public name: string;
@@ -32,16 +33,17 @@ export default defineComponent({
             playerStore.throwDice();
         }
 
-        function increment() {
-            playerStore.increment();
-        }
         function getPlayers() {
             return playerStore.getPlayers();
         }
 
+        const { players, throwsLeft, currentPlayer } = storeToRefs(playerStore);
+
         return {
-            playerArray: playerStore.players,
-            playerThrows: playerStore.throwsLeft,
+            playerStore,
+            playerArray: players,
+            playerThrows: throwsLeft,
+            currentPlayer,
             addPlayer,
             clearPlayers,
             getPlayers,
@@ -54,7 +56,6 @@ export default defineComponent({
             names: [],
             playerCount: 1,
             currentDice: [0, 0, 0, 0, 0, 0],
-            currentPlayer: 0,
         }
     },
     components: {
@@ -87,7 +88,11 @@ export default defineComponent({
                 die.diceRoll();
             });
             //--this.rollsRemaining;
-            this.playerThrows--;
+            //this.playerThrows--;
+            this.throwDice();
+            //this.playerStore.$patch({
+            //    throwsLeft: this.playerThrows - 1,
+            //})
             this.countDice(allDice);
         },
         createPlayers() {
@@ -118,7 +123,6 @@ export default defineComponent({
         <br>
         <button v-on:click="playerRoll()" :disabled="playerThrows < 1 || playerArray.length < 1">Kasta Tärning</button>
         <div>Number of throws left: {{ playerThrows }}</div>
-        <button v-on:click="playerThrows = 3">Avsluta runda</button><br>
         <button v-on:click="playerCount = 1">1</button>
         <button v-on:click="playerCount = 2">2</button>
         <button v-on:click="playerCount = 3">3</button>
@@ -131,10 +135,6 @@ export default defineComponent({
         <button v-on:click="createPlayers()">Lägg till spelare</button>
         <div>{{ names }}</div>
         <TableComp />
-        
-        <div >
-            <input type="text" />
-        </div>
     </main>
 </template>
 

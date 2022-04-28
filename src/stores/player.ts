@@ -7,6 +7,7 @@ export const usePlayerStore = defineStore({
     state: () => ({ 
         players: [],
         throwsLeft: 3,
+        currentPlayer: 0,
     }),
     actions: {
         addPlayer(player: string) {
@@ -16,7 +17,7 @@ export const usePlayerStore = defineStore({
             this.players.length = 0;
         },
         throwDice() {
-            this.throwsLeft++;
+            this.throwsLeft--;
         },
         resetThrows() {
             this.throwsLeft = 3;
