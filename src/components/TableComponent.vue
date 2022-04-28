@@ -34,8 +34,11 @@ export default {
     methods: {
         addChosenPoints(pointIndex: number) {
             //console.log(this.playerThrows)
-            this.playerArray[this.currentPlayer].score[pointIndex] = this.playerArray[this.currentPlayer].selectScore[pointIndex];
-            this.playerArray[this.currentPlayer].selectScore = [null, null, null, null, null, null];
+            let player = this.playerArray[this.currentPlayer];
+            player.score[pointIndex] = player.selectScore[pointIndex];
+            player.selectScore = [null, null, null, null, null, null];
+            player.score[6] = player.score[0] + player.score[1] + player.score[2] + player.score[3] + player.score[4] + player.score[5];
+
             this.throwsLeft = 3;
             this.currentPlayer++;
             if (this.currentPlayer >= this.playerArray.length) {
