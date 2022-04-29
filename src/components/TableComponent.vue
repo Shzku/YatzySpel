@@ -39,6 +39,12 @@ export default {
             player.selectScore = [null, null, null, null, null, null];
             player.score[6] = player.score[0] + player.score[1] + player.score[2] + player.score[3] + player.score[4] + player.score[5];
 
+            if (player.score[6] >= 63) {
+                player.score[7] = 35;
+            }
+            
+            player.score[17] = player.score[6] + player.score[7];
+
             this.throwsLeft = 3;
             this.currentPlayer++;
             if (this.currentPlayer >= this.playerArray.length) {

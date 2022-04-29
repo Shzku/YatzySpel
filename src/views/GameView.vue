@@ -12,7 +12,7 @@ class Spelare {
 
     constructor(name: string) {
         this.name = name;
-        this.score = [null, null, null, null, null, null, 0, null, null, null, null, null, null, null, null, null, null, 0];
+        this.score = [null, null, null, null, null, null, 0, 0, null, null, null, null, null, null, null, null, null, 0];
         this.selectScore = [null, null, null, null, null, null, null, null, null, null, null];
     }
 }
@@ -67,7 +67,7 @@ export default defineComponent({
             this.currentDice = [0, 0, 0, 0, 0, 0];
             let count = 0;
             dice.forEach(die => {
-                console.log(die.rolledNumber)
+                //console.log(die.rolledNumber)
                 this.currentDice[die.rolledNumber-1]++;
             });
             console.log(count)
@@ -75,11 +75,14 @@ export default defineComponent({
             this.currentDice.forEach(die => {
                 if (i >= 7) return;
                 this.playerArray[this.currentPlayer].selectScore[i] = die * (i + 1);
-                console.log(i);
+                //console.log(i);
                 i++
             });
+            this.currentDice.forEach(die => {
+                console.log(die)
+            });
             //this.playerArray[this.currentPlayer].selectScore = this.currentDice;
-            console.log(this.currentDice)
+            //console.log(this.currentDice)
             return count;
         },
         playerRoll() {
