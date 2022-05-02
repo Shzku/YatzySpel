@@ -7,13 +7,13 @@ import { storeToRefs } from 'pinia';
 
 class Spelare {
     public name: string;
-    public score: Array<number|null>;
-    public selectScore: Array<number|null>;
+    public score: Array<number | null>;
+    public selectScore: Array<number | null>;
 
     constructor(name: string) {
         this.name = name;
         this.score = [null, null, null, null, null, null, 0, 0, null, null, null, null, null, null, null, null, null, 0];
-        this.selectScore = [null, null, null, null, null, null, null, null, null, null, null];
+        this.selectScore = [null, null, null, null, null, null, null, null, null, null, null, null, null, null];
     }
 }
 
@@ -70,7 +70,7 @@ export default defineComponent({
             let count = 0;
             dice.forEach(die => {
                 //console.log(die.rolledNumber)
-                this.currentDice[die.rolledNumber-1]++;
+                this.currentDice[die.rolledNumber - 1]++;
             });
             //console.log(count)
             let i = 0
@@ -83,25 +83,13 @@ export default defineComponent({
 
             this.playerArray[this.currentPlayer].selectScore[14] = (this.currentDice[0] * 1) + (this.currentDice[1] * 2) + (this.currentDice[2] * 3) + (this.currentDice[3] * 4) + (this.currentDice[4] * 5) + (this.currentDice[5] * 6);
 
+            this.checkLadderNew(this.currentDice);
+
             let dieCount = 1;
             let pairExists = 0;
             let numOfPair = 0;
             let singleDie = 0;
             this.currentDice.forEach(die => {
-                //console.log(dieCount + ": " + die)
-                
-                /* HOW TO CALCULATE LADDER??
-                if (die == 1) {
-                    if (dieCount == 1 || dieCount == 6) {
-                        console.log("Skipped " + dieCount);
-                        return;
-                    };
-                    console.log(dieCount + ": not skipped");
-                    singleDie++
-                } else {
-                    singleDie = 0;
-                };
-                */
                 console.log(dieCount);
 
                 if (die == 2) {
@@ -110,7 +98,7 @@ export default defineComponent({
                     if (pairExists) {
                         console.log(pairExists + " : " + die * dieCount);
                         this.playerArray[this.currentPlayer].selectScore[7] = pairExists + (die * dieCount);
-                    }   
+                    }
                     pairExists = die * dieCount;
                     numOfPair++;
                 }
@@ -123,7 +111,7 @@ export default defineComponent({
                     }
                 }
 
-                if (die == 3 ) {
+                if (die == 3) {
                     console.log(dieCount + " is a three of a kind")
                     this.playerArray[this.currentPlayer].selectScore[8] = (this.currentDice[0] * 1) + (this.currentDice[1] * 2) + (this.currentDice[2] * 3) + (this.currentDice[3] * 4) + (this.currentDice[4] * 5) + (this.currentDice[5] * 6);
                     this.currentDice.forEach(dieTwo => {
@@ -133,15 +121,15 @@ export default defineComponent({
                     });
                     return;
                 }
-                
-                if (die == 4 ) {
+
+                if (die == 4) {
                     console.log(dieCount + " is a four of a kind")
                     this.playerArray[this.currentPlayer].selectScore[8] = (this.currentDice[0] * 1) + (this.currentDice[1] * 2) + (this.currentDice[2] * 3) + (this.currentDice[3] * 4) + (this.currentDice[4] * 5) + (this.currentDice[5] * 6);
                     this.playerArray[this.currentPlayer].selectScore[9] = (this.currentDice[0] * 1) + (this.currentDice[1] * 2) + (this.currentDice[2] * 3) + (this.currentDice[3] * 4) + (this.currentDice[4] * 5) + (this.currentDice[5] * 6);
                     return;
                 }
 
-                if (die == 5 ) {
+                if (die == 5) {
                     console.log(dieCount + " is a yatzy!")
                     return;
                 }
@@ -163,8 +151,6 @@ export default defineComponent({
                 this.playerArray[this.currentPlayer].selectScore[12] = 40;
             }
 
-            //this.playerArray[this.currentPlayer].selectScore = this.currentDice;
-            //console.log(this.currentDice)
             return count;
         },
         playerRoll() {
@@ -172,25 +158,59 @@ export default defineComponent({
             allDice.forEach(die => {
                 die.diceRoll();
             });
-            //--this.rollsRemaining;
-            //this.playerThrows--;
-
-            //this.throwDice();
-
-            //this.playerStore.$patch({
-            //    throwsLeft: this.playerThrows - 1,
-            //})
             this.countDice(allDice);
         },
         createPlayers() {
             this.clearPlayers();
             let createdUsers = 0;
             this.names.forEach((name: string) => {
-                if (createdUsers>=this.playerCount) return;
+                if (createdUsers >= this.playerCount) return;
                 this.addPlayer(new Spelare(name));
                 console.log(name)
                 createdUsers++;
             });
+        },
+        checkLadder(dice: Array<number>) {
+            let ladder = 0;
+            let lastVal = 0;
+            for (let die of dice) {
+                if (die) {
+                    ladder++;
+                    console.log("The current ladder count: " + ladder);
+                } else {
+                    console.log("The ladder has been reset");
+                    if (ladder) {
+                        lastVal = ladder;
+                    }
+                    ladder = 0;
+                }
+                console.log(" ")
+            };
+            if (ladder == 4 || lastVal == 4 ) {
+                console.log("Small Ladder!");
+            }
+            if (ladder == 5 || lastVal == 5) {
+                console.log("Large Ladder!");
+            }
+
+            console.log(ladder + " is final count")
+        },
+        checkLadderNew(dice: Array<number>) {
+            let count = 1;
+            let lastVal = 0;
+            console.log("Hello");
+            for (var i = 0; i < dice.length; i++) {
+                if (dice[i] && lastVal)
+                count+=1
+                lastVal = dice[i];
+            };
+            console.log("Count is: " + (count));
+
+            if (count == 4) this.playerArray[this.currentPlayer].selectScore[11] = 30;
+            if (count == 5) {
+                this.playerArray[this.currentPlayer].selectScore[11] = 30;
+                this.playerArray[this.currentPlayer].selectScore[12] = 40;
+            }
         }
     }
 })
@@ -214,7 +234,7 @@ export default defineComponent({
         <button v-on:click="playerCount = 2">2</button>
         <button v-on:click="playerCount = 3">3</button>
         <button v-on:click="playerCount = 4">4</button><br>
-        <div>{{playerCount}}</div>
+        <div>{{ playerCount }}</div>
         <input v-if="0 < playerCount" type="text" v-model="names[0]">
         <input v-if="1 < playerCount" type="text" v-model="names[1]">
         <input v-if="2 < playerCount" type="text" v-model="names[2]">
