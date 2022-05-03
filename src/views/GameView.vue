@@ -12,7 +12,7 @@ class Spelare {
 
     constructor(name: string) {
         this.name = name;
-        this.score = [null, null, null, null, null, null, 0, 0, null, null, null, null, null, null, null, null, null, 0];
+        this.score = [null, null, null, null, null, null, 0, 0, 0, null, null, null, null, null, null, null, null, 0];
         this.selectScore = [null, null, null, null, null, null, null, null, null, null, null, null, null, null];
     }
 }
@@ -64,93 +64,55 @@ export default defineComponent({
     },
     methods: {
         countDice(dice: Array<any>) {
-            this.playerArray[this.currentPlayer].selectScore = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            this.playerArray[this.currentPlayer].selectScore = [0, 0, 0, 0, 0, 0, null, null, null, null, 0, 0, 0, 0, 0, 0, 0];
 
             this.currentDice = [0, 0, 0, 0, 0, 0];
             let count = 0;
             dice.forEach(die => {
-                //console.log(die.rolledNumber)
                 this.currentDice[die.rolledNumber - 1]++;
             });
-            //console.log(count)
             let i = 0
             this.currentDice.forEach(die => {
                 if (i >= 8) return;
                 this.playerArray[this.currentPlayer].selectScore[i] = die * (i + 1);
-                //console.log(i);
                 i++
             });
 
-            this.playerArray[this.currentPlayer].selectScore[14] = (this.currentDice[0] * 1) + (this.currentDice[1] * 2) + (this.currentDice[2] * 3) + (this.currentDice[3] * 4) + (this.currentDice[4] * 5) + (this.currentDice[5] * 6);
+            // Chance
+            this.playerArray[this.currentPlayer].selectScore[16] = (this.currentDice[0] * 1) + (this.currentDice[1] * 2) + (this.currentDice[2] * 3) + (this.currentDice[3] * 4) + (this.currentDice[4] * 5) + (this.currentDice[5] * 6);
 
-            this.checkLadderNew(this.currentDice);
+            this.checkLadder(this.currentDice);
 
             let dieCount = 1;
             let pairExists = 0;
             let numOfPair = 0;
             let singleDie = 0;
             this.currentDice.forEach(die => {
-                console.log(dieCount);
-
-                if (die == 2) {
-                    console.log(dieCount + " is a pair")
-                    this.playerArray[this.currentPlayer].selectScore[6] = die * dieCount;
-                    if (pairExists) {
-                        console.log(pairExists + " : " + die * dieCount);
-                        this.playerArray[this.currentPlayer].selectScore[7] = pairExists + (die * dieCount);
-                    }
-                    pairExists = die * dieCount;
-                    numOfPair++;
-                }
-
-                if (!pairExists) {
-                    this.playerArray[this.currentPlayer].selectScore[6] = 0;
-                    //console.log(numOfPair)
-                    if (numOfPair <= 1) {
-                        this.playerArray[this.currentPlayer].selectScore[7] = 0;
-                    }
-                }
-
+                
                 if (die == 3) {
-                    console.log(dieCount + " is a three of a kind")
-                    this.playerArray[this.currentPlayer].selectScore[8] = (this.currentDice[0] * 1) + (this.currentDice[1] * 2) + (this.currentDice[2] * 3) + (this.currentDice[3] * 4) + (this.currentDice[4] * 5) + (this.currentDice[5] * 6);
+                    this.playerArray[this.currentPlayer].selectScore[10] = (this.currentDice[0] * 1) + (this.currentDice[1] * 2) + (this.currentDice[2] * 3) + (this.currentDice[3] * 4) + (this.currentDice[4] * 5) + (this.currentDice[5] * 6);
                     this.currentDice.forEach(dieTwo => {
                         if (dieTwo == 2) {
-                            this.playerArray[this.currentPlayer].selectScore[10] = 25;
+                            this.playerArray[this.currentPlayer].selectScore[12] = 25;
                         }
                     });
                     return;
                 }
 
-                if (die == 4) {
-                    console.log(dieCount + " is a four of a kind")
-                    this.playerArray[this.currentPlayer].selectScore[8] = (this.currentDice[0] * 1) + (this.currentDice[1] * 2) + (this.currentDice[2] * 3) + (this.currentDice[3] * 4) + (this.currentDice[4] * 5) + (this.currentDice[5] * 6);
-                    this.playerArray[this.currentPlayer].selectScore[9] = (this.currentDice[0] * 1) + (this.currentDice[1] * 2) + (this.currentDice[2] * 3) + (this.currentDice[3] * 4) + (this.currentDice[4] * 5) + (this.currentDice[5] * 6);
+                if (die >= 4) {
+                    this.playerArray[this.currentPlayer].selectScore[10] = (this.currentDice[0] * 1) + (this.currentDice[1] * 2) + (this.currentDice[2] * 3) + (this.currentDice[3] * 4) + (this.currentDice[4] * 5) + (this.currentDice[5] * 6);
+                    this.playerArray[this.currentPlayer].selectScore[11] = (this.currentDice[0] * 1) + (this.currentDice[1] * 2) + (this.currentDice[2] * 3) + (this.currentDice[3] * 4) + (this.currentDice[4] * 5) + (this.currentDice[5] * 6);
+                    if (die == 5) {
+                        this.playerArray[this.currentPlayer].selectScore[15] = 50;
+                    }
                     return;
                 }
 
-                if (die == 5) {
-                    console.log(dieCount + " is a yatzy!")
-                    return;
-                }
+                
 
                 dieCount++
             });
-
-            console.log(singleDie)
-
-            if (singleDie >= 3) {
-                console.log(this.currentDice);
-                console.log("small Ladder")
-                this.playerArray[this.currentPlayer].selectScore[11] = 30;
-            }
-
-            if (singleDie >= 4) {
-                console.log(this.currentDice);
-                console.log("large Ladder")
-                this.playerArray[this.currentPlayer].selectScore[12] = 40;
-            }
-
+            
             return count;
         },
         playerRoll() {
@@ -166,50 +128,22 @@ export default defineComponent({
             this.names.forEach((name: string) => {
                 if (createdUsers >= this.playerCount) return;
                 this.addPlayer(new Spelare(name));
-                console.log(name)
                 createdUsers++;
             });
         },
         checkLadder(dice: Array<number>) {
-            let ladder = 0;
-            let lastVal = 0;
-            for (let die of dice) {
-                if (die) {
-                    ladder++;
-                    console.log("The current ladder count: " + ladder);
-                } else {
-                    console.log("The ladder has been reset");
-                    if (ladder) {
-                        lastVal = ladder;
-                    }
-                    ladder = 0;
-                }
-                console.log(" ")
-            };
-            if (ladder == 4 || lastVal == 4 ) {
-                console.log("Small Ladder!");
-            }
-            if (ladder == 5 || lastVal == 5) {
-                console.log("Large Ladder!");
-            }
-
-            console.log(ladder + " is final count")
-        },
-        checkLadderNew(dice: Array<number>) {
             let count = 1;
             let lastVal = 0;
-            console.log("Hello");
             for (var i = 0; i < dice.length; i++) {
                 if (dice[i] && lastVal)
                 count+=1
                 lastVal = dice[i];
             };
-            console.log("Count is: " + (count));
 
-            if (count == 4) this.playerArray[this.currentPlayer].selectScore[11] = 30;
+            if (count == 4) this.playerArray[this.currentPlayer].selectScore[13] = 30;
             if (count == 5) {
-                this.playerArray[this.currentPlayer].selectScore[11] = 30;
-                this.playerArray[this.currentPlayer].selectScore[12] = 40;
+                this.playerArray[this.currentPlayer].selectScore[13] = 30;
+                this.playerArray[this.currentPlayer].selectScore[14] = 40;
             }
         }
     }
