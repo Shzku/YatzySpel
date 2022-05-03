@@ -51,6 +51,8 @@ export default {
             if (this.currentPlayer >= this.playerArray.length) {
                 this.currentPlayer = 0;
             }
+
+            this.$parent.unlockDice();
         }
     },
 }

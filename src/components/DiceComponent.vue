@@ -1,5 +1,17 @@
 <script lang="ts">
+import { usePlayerStore } from "@/stores/player";
+import { storeToRefs } from "pinia";
+
 export default {
+    setup() {
+        const playerStore = usePlayerStore();
+
+        const { throwsLeft } = storeToRefs(playerStore);
+
+        return {
+            throwsLeft
+        }
+    },
     data() {
         return {
             locked: false,
@@ -16,5 +28,5 @@ export default {
 </script>
 
 <template>
-    <button v-on:click="locked=!locked">{{rolledNumber}}:{{locked}}</button>
+    <button v-on:click="locked=!locked" :disabled="throwsLeft == 3">{{rolledNumber}}:{{locked}}</button>
 </template>

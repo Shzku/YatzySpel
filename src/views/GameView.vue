@@ -44,6 +44,7 @@ export default defineComponent({
             playerArray: players,
             playerThrows: throwsLeft,
             currentPlayer,
+            throwsLeft,
             addPlayer,
             clearPlayers,
             getPlayers,
@@ -63,6 +64,13 @@ export default defineComponent({
         DiceComponent
     },
     methods: {
+        unlockDice() {
+            var allDice = [this.$refs.dice1, this.$refs.dice2, this.$refs.dice3, this.$refs.dice4, this.$refs.dice5];
+            allDice.forEach(dice => {
+                console.log(dice);
+                dice.locked = false;
+            });
+        },
         countDice(dice: Array<any>) {
             this.playerArray[this.currentPlayer].selectScore = [0, 0, 0, 0, 0, 0, null, null, null, null, 0, 0, 0, 0, 0, 0, 0];
 
@@ -120,6 +128,7 @@ export default defineComponent({
             allDice.forEach(die => {
                 die.diceRoll();
             });
+            this.throwDice();
             this.countDice(allDice);
         },
         createPlayers() {
@@ -130,6 +139,7 @@ export default defineComponent({
                 this.addPlayer(new Spelare(name));
                 createdUsers++;
             });
+            this.throwsLeft = 3;
         },
         checkLadder(dice: Array<number>) {
             let count = 1;
