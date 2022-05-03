@@ -163,14 +163,15 @@ export default defineComponent({
 
 <template>
     <main>
-        <h3>{{ playerArray }}</h3>
         <button>Regler</button>
         <button>Poäng</button><br>
-        <DiceComponent ref="dice1" />
-        <DiceComponent ref="dice2" />
-        <DiceComponent ref="dice3" />
-        <DiceComponent ref="dice4" />
-        <DiceComponent ref="dice5" />
+        <div>
+            <DiceComponent ref="dice1" />
+            <DiceComponent ref="dice2" />
+            <DiceComponent ref="dice3" />
+            <DiceComponent ref="dice4" />
+            <DiceComponent ref="dice5" />
+        </div>
         <br>
         <button v-on:click="playerRoll()" :disabled="playerThrows < 1 || playerArray.length < 1">Kasta Tärning</button>
         <div>Number of throws left: {{ playerThrows }}</div>
@@ -178,13 +179,11 @@ export default defineComponent({
         <button v-on:click="playerCount = 2">2</button>
         <button v-on:click="playerCount = 3">3</button>
         <button v-on:click="playerCount = 4">4</button><br>
-        <div>{{ playerCount }}</div>
         <input v-if="0 < playerCount" type="text" v-model="names[0]">
         <input v-if="1 < playerCount" type="text" v-model="names[1]">
         <input v-if="2 < playerCount" type="text" v-model="names[2]">
         <input v-if="3 < playerCount" type="text" v-model="names[3]">
         <button v-on:click="createPlayers()">Lägg till spelare</button>
-        <div>{{ names }}</div>
         <TableComp />
     </main>
 </template>
@@ -193,6 +192,6 @@ export default defineComponent({
 table,
 tr,
 td {
-    border: 1px black solid;
+    border: 1px white solid;
 }
 </style>

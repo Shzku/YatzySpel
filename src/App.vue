@@ -8,11 +8,9 @@ import { RouterLink, RouterView } from 'vue-router';
             <component :is="Component"/>
         </transition>
     </RouterView>
-
-    
 </template>
 
-<style>
+<style scoped src="./assets/css/style.css">
 /*
 .route-enter-from {
     opacity: 0;
