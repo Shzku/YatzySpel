@@ -10,7 +10,8 @@ import { RouterLink, RouterView } from 'vue-router';
     </RouterView>
 </template>
 
-<style scoped src="./assets/css/style.css">
+<style>
+@import './assets/base.css';
 /*
 .route-enter-from {
     opacity: 0;

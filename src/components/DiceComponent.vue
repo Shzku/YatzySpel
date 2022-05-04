@@ -64,12 +64,17 @@ export default {
         v-on:click="locked=!locked" 
         :disabled="throwsLeft == 3"
     >
-        <img :src="locked ? diceLockedTable[rolledNumber - 1] : diceUnlockedTable[rolledNumber - 1]" alt="dice"/>
+        <img :src="locked ? diceLockedTable[rolledNumber - 1] : diceUnlockedTable[rolledNumber - 1]" alt="dice" style="visibility: visible;" v-bind:class="{ disabled: throwsLeft == 3}"/>
     </button>
 </template>
 
 <style>
+    .disabled {
+        opacity: 0.5;
+    }
     .diceButton {
-
+        padding: 0;
+        border: 0;
+        visibility: hidden;
     }
 </style>

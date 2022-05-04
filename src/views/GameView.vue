@@ -163,18 +163,27 @@ export default defineComponent({
 
 <template>
     <main>
-        <button>Regler</button>
-        <button>Poäng</button><br>
-        <div>
-            <DiceComponent ref="dice1" />
-            <DiceComponent ref="dice2" />
-            <DiceComponent ref="dice3" />
-            <DiceComponent ref="dice4" />
-            <DiceComponent ref="dice5" />
+        <div class="flex-container">
+            <button class="menuButtons">Regler</button>
+            <button class="menuButtons">Poäng</button><br>
         </div>
-        <br>
-        <button v-on:click="playerRoll()" :disabled="playerThrows < 1 || playerArray.length < 1">Kasta Tärning</button>
-        <div>Number of throws left: {{ playerThrows }}</div>
+        <div class="flex-container-3">
+            <div class="flex-container-2">
+                <DiceComponent ref="dice1" />
+                <DiceComponent ref="dice2" />
+                <DiceComponent ref="dice3" />
+                <DiceComponent ref="dice4" />
+                <DiceComponent ref="dice5" />
+            </div>
+            <br>
+            <div class="iDontLikeFlexboxAnymore">
+                <button v-on:click="playerRoll()" :disabled="playerThrows < 1 || playerArray.length < 1" class="menuButtons" v-bind:class="{ disabled: playerThrows == 0 }" style="width: fit-content">Kasta Tärning</button>
+                <div class="menuButtons" style="width: fit-content; margin: 30px">{{ playerThrows }}/3</div>
+            </div>
+        </div>
+
+
+        <div style="visibility: visible;">
         <button v-on:click="playerCount = 1">1</button>
         <button v-on:click="playerCount = 2">2</button>
         <button v-on:click="playerCount = 3">3</button>
@@ -185,10 +194,65 @@ export default defineComponent({
         <input v-if="3 < playerCount" type="text" v-model="names[3]">
         <button v-on:click="createPlayers()">Lägg till spelare</button>
         <TableComp />
+        </div>
     </main>
 </template>
 
 <style>
+@import '../assets/base.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+
+.disabled {
+    opacity: 0.5;
+}
+
+.menuButtons {
+    background-color: var(--colour-button-background);
+    padding: 25px 30px;
+    border: 0;
+    color: var(--colour-text);
+    font-size: xx-large;
+    font-family: 'Inter', sans-serif;
+    border-radius: 12px;
+}
+
+.flex-container {
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    /*flex-wrap: wrap;*/
+    justify-content: center;
+}
+
+.flex-container > button {
+    margin: 10px;
+}
+
+.flex-container-2 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.flex-container-2 > * {
+    margin: 30px;
+}
+
+.flex-container-3 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.iDontLikeFlexboxAnymore {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
 table,
 tr,
 td {
