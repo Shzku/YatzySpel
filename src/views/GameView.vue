@@ -58,6 +58,8 @@ export default defineComponent({
             names: [],
             playerCount: 1,
             currentDice: [0, 0, 0, 0, 0, 0],
+            pointsOverlayVisible: false,
+            rulesOverlayVisible: false,
         }
     },
     components: {
@@ -162,11 +164,11 @@ export default defineComponent({
 
 <template>
     <main>
-        <div v-bind:class="{ blurred: playerArray < 1 }"
+        <div v-bind:class="{ blurred: playerArray < 1 || pointsOverlayVisible}"
             style="top: 0; left: 0; width: 100vw; height: 100vh; position: absolute;">
             <div class="flex-container">
-                <button class="menuButtons" :disabled="playerArray.length < 1">Regler</button>
-                <button class="menuButtons" :disabled="playerArray.length < 1">Poäng</button><br>
+                <button class="menuButtons" :disabled="playerArray.length < 1" v-on:click="rulesOverlayVisible = true">Regler</button>
+                <button class="menuButtons" :disabled="playerArray.length < 1" v-on:click="pointsOverlayVisible = true">Poäng</button><br>
             </div>
             <div class="flex-container-3">
                 <div class="flex-container-2">
@@ -188,11 +190,14 @@ export default defineComponent({
         </div>
 
         <div v-if="!playerArray[0]"
-            style="position: absolute; top: 0; width: 100vw; height: 100vh; left: 0; display: flex; align-items: center; justify-content: center;">
+            style="position: absolute; 
+            top: 0; width: 100vw; height: 100vh; 
+            left: 0; display: flex; align-items: center; 
+            justify-content: center; ">
             <PlayerCreationOverlay />
         </div>
 
-        <div style="display: none;">
+        <div v-if="pointsOverlayVisible" style="height: 100vh; width: 100vw; top: 0; left: 0; margin: 0; align-items: center" class="flex-container">
             <TableComp />
         </div>
     </main>
@@ -255,11 +260,5 @@ export default defineComponent({
     flex-direction: column;
     flex-wrap: wrap;
     align-items: center;
-}
-
-table,
-tr,
-td {
-    border: 1px white solid;
 }
 </style>
