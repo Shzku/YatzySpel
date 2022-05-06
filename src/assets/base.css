@@ -3,12 +3,19 @@
   --ys-c-pink-900: #831843; /* Yatzy spel bakgrunds färg */
   --ys-c-grey-800: #1F2937;
   --ys-c-text-white: #FFFFFF;
+  --ys-c-grey-700: #374151;
+  --ys-c-grey-900: #111827;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --colour-button-background: var(--ys-c-grey-800);
+    --colour-container-background: var(--ys-c-grey-800);
+    --colour-button-border: var(--ys-c-grey-700);
+    --colour-button-selected: var(--ys-c-grey-900);
     --colour-text: var(--ys-c-text-white);
+    --colour-textInput-background: var(--ys-c-grey-800);
+    --colour-button-background-alt: var(--ys-c-pink-900);
   }
 }
 

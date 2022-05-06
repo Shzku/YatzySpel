@@ -4,6 +4,7 @@ import { defineComponent } from 'vue';
 import { usePlayerStore } from '@/stores/player';
 import DiceComponent from '@/components/DiceComponent.vue';
 import { storeToRefs } from 'pinia';
+import PlayerCreationOverlay from '@/components/PlayerCreationOverlay.vue';
 
 class Spelare {
     public name: string;
@@ -61,7 +62,8 @@ export default defineComponent({
     },
     components: {
         TableComp,
-        DiceComponent
+        DiceComponent,
+        PlayerCreationOverlay,
     },
     methods: {
         unlockDice() {
@@ -96,7 +98,7 @@ export default defineComponent({
             let numOfPair = 0;
             let singleDie = 0;
             this.currentDice.forEach(die => {
-                
+
                 if (die == 3) {
                     this.playerArray[this.currentPlayer].selectScore[10] = (this.currentDice[0] * 1) + (this.currentDice[1] * 2) + (this.currentDice[2] * 3) + (this.currentDice[3] * 4) + (this.currentDice[4] * 5) + (this.currentDice[5] * 6);
                     this.currentDice.forEach(dieTwo => {
@@ -116,11 +118,8 @@ export default defineComponent({
                     return;
                 }
 
-                
-
                 dieCount++
             });
-            
             return count;
         },
         playerRoll() {
@@ -146,7 +145,7 @@ export default defineComponent({
             let lastVal = 0;
             for (var i = 0; i < dice.length; i++) {
                 if (dice[i] && lastVal)
-                count+=1
+                    count += 1
                 lastVal = dice[i];
             };
 
@@ -163,44 +162,49 @@ export default defineComponent({
 
 <template>
     <main>
-        <div class="flex-container">
-            <button class="menuButtons">Regler</button>
-            <button class="menuButtons">Poäng</button><br>
-        </div>
-        <div class="flex-container-3">
-            <div class="flex-container-2">
-                <DiceComponent ref="dice1" />
-                <DiceComponent ref="dice2" />
-                <DiceComponent ref="dice3" />
-                <DiceComponent ref="dice4" />
-                <DiceComponent ref="dice5" />
+        <div v-bind:class="{ blurred: playerArray < 1 }"
+            style="top: 0; left: 0; width: 100vw; height: 100vh; position: absolute;">
+            <div class="flex-container">
+                <button class="menuButtons" :disabled="playerArray.length < 1">Regler</button>
+                <button class="menuButtons" :disabled="playerArray.length < 1">Poäng</button><br>
             </div>
-            <br>
-            <div class="iDontLikeFlexboxAnymore">
-                <button v-on:click="playerRoll()" :disabled="playerThrows < 1 || playerArray.length < 1" class="menuButtons" v-bind:class="{ disabled: playerThrows == 0 }" style="width: fit-content">Kasta Tärning</button>
-                <div class="menuButtons" style="width: fit-content; margin: 30px">{{ playerThrows }}/3</div>
+            <div class="flex-container-3">
+                <div class="flex-container-2">
+                    <DiceComponent ref="dice1" />
+                    <DiceComponent ref="dice2" />
+                    <DiceComponent ref="dice3" />
+                    <DiceComponent ref="dice4" />
+                    <DiceComponent ref="dice5" />
+                </div>
+                <br>
+                <div class="iDontLikeFlexboxAnymore">
+                    <button v-on:click="playerRoll()" :disabled="playerThrows < 1 || playerArray.length < 1"
+                        class="menuButtons" v-bind:class="{ disabled: playerThrows == 0 }"
+                        style="width: fit-content">Kasta
+                        Tärning</button>
+                    <div class="menuButtons" style="width: fit-content; margin: 30px">{{ playerThrows }}/3</div>
+                </div>
             </div>
         </div>
 
+        <div v-if="!playerArray[0]"
+            style="position: absolute; top: 0; width: 100vw; height: 100vh; left: 0; display: flex; align-items: center; justify-content: center;">
+            <PlayerCreationOverlay />
+        </div>
 
-        <div style="visibility: visible;">
-        <button v-on:click="playerCount = 1">1</button>
-        <button v-on:click="playerCount = 2">2</button>
-        <button v-on:click="playerCount = 3">3</button>
-        <button v-on:click="playerCount = 4">4</button><br>
-        <input v-if="0 < playerCount" type="text" v-model="names[0]">
-        <input v-if="1 < playerCount" type="text" v-model="names[1]">
-        <input v-if="2 < playerCount" type="text" v-model="names[2]">
-        <input v-if="3 < playerCount" type="text" v-model="names[3]">
-        <button v-on:click="createPlayers()">Lägg till spelare</button>
-        <TableComp />
+        <div style="display: none;">
+            <TableComp />
         </div>
     </main>
 </template>
 
 <style>
 @import '../assets/base.css';
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+
+.blurred {
+    filter: blur(2px) brightness(70%);
+}
 
 .disabled {
     opacity: 0.5;
@@ -213,6 +217,7 @@ export default defineComponent({
     color: var(--colour-text);
     font-size: xx-large;
     font-family: 'Inter', sans-serif;
+    font-weight: 500;
     border-radius: 12px;
 }
 
@@ -220,11 +225,10 @@ export default defineComponent({
     margin: 10px;
     display: flex;
     flex-direction: row;
-    /*flex-wrap: wrap;*/
     justify-content: center;
 }
 
-.flex-container > button {
+.flex-container>button {
     margin: 10px;
 }
 
@@ -235,7 +239,7 @@ export default defineComponent({
     justify-content: center;
 }
 
-.flex-container-2 > * {
+.flex-container-2>* {
     margin: 30px;
 }
 
