@@ -340,4 +340,18 @@ td {
     }
 }
 
+@media screen and (min-width: 1200px) {
+    table {
+        font-size: 2rem;
+    }
+
+    .swapOverlayButton {
+        font-size: 3rem;
+    }
+
+    .overlayTitle {
+        font-size: 3rem;
+    }
+}
+
 </style>

@@ -158,10 +158,29 @@ input {
 @media screen and (min-width: 800px) {
     .overlayContainer {
         width: fit-content;
+        padding: 40px;
     }
 
     .toggleButton {
         height: 6vh;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .overlayContainer {
+        font-size: xx-large;
+    }
+
+    .toggleButton {
+        font-size: 2.8rem;
+    }
+
+    #startButton {
+        padding: 1.5rem;
+    }
+
+    #header {
+        padding: 1.5rem;
     }
 }
 

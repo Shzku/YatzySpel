@@ -45,4 +45,16 @@ import { RouterLink, RouterView } from 'vue-router';
     text-decoration: none;
 }
 
+@media screen and (min-width: 800px) {
+    .title {
+        font-size: 7em;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .title {
+        font-size: 10em;
+    }
+}
+
 </style>

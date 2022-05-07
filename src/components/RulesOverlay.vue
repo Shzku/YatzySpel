@@ -120,4 +120,10 @@ export default {
         width: 100%;
     }
 }
+
+@media screen and (min-width: 1200px) {
+    .swapOverlayButton2 {
+        font-size: 3rem;
+    }
+}
 </style>

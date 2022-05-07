@@ -84,4 +84,10 @@ export default {
         }
     }
 
+    @media screen and (min-width: 1200px) {
+        .dice {
+            width: 180px;
+        }
+    }
+
 </style>

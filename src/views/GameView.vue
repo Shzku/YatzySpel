@@ -182,7 +182,7 @@ export default defineComponent({
                     <DiceComponent ref="dice5" />
                 </div>
                 <br>
-                <div style="width: auto; top: 0; left: 0; margin: 0; align-items: center" class="InfoBox">
+                <div style="top: 0; left: 0; margin: 0; align-items: center" class="InfoBox">
                     <RuleOverlay v-if="infoboxToggle"/>
                     <TableComp v-if="!infoboxToggle"/>
                 </div>
@@ -225,6 +225,7 @@ export default defineComponent({
     justify-content: center;
     visibility: hidden;
     height: 0px;
+    width: auto;
 }
 
 .blurred {
@@ -312,6 +313,33 @@ export default defineComponent({
         visibility: visible;
         margin: 10px;
         height: 83vh;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .InfoBox {
+        width: 33vw;
+        float: left;
+        height: 100%;
+    }
+
+    .flex-container-2 {
+        flex-direction: row;
+        width: 65vw;
+        float: right;
+        height: fit-content;
+        margin-top: 25vh;
+    }
+
+    .iDontLikeFlexboxAnymore {
+        flex-direction: row;
+        justify-content: center;
+        width: 65vw;
+        margin-top: 50vh;
+    }
+
+    .menuButtons {
+        font-size: 2.2rem;
     }
 }
 
