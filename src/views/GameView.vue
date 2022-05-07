@@ -5,6 +5,7 @@ import { usePlayerStore } from '@/stores/player';
 import DiceComponent from '@/components/DiceComponent.vue';
 import { storeToRefs } from 'pinia';
 import PlayerCreationOverlay from '@/components/PlayerCreationOverlay.vue';
+import RuleOverlay from '@/components/RulesOverlay.vue';
 
 class Spelare {
     public name: string;
@@ -66,6 +67,7 @@ export default defineComponent({
         TableComp,
         DiceComponent,
         PlayerCreationOverlay,
+        RuleOverlay,
     },
     methods: {
         unlockDice() {
@@ -164,7 +166,7 @@ export default defineComponent({
 
 <template>
     <main>
-        <div v-bind:class="{ blurred: playerArray < 1 || pointsOverlayVisible}"
+        <div v-bind:class="{ blurred: playerArray < 1 || pointsOverlayVisible || rulesOverlayVisible }"
             style="top: 0; left: 0; width: 100vw; height: 100vh; position: absolute;">
             <div class="flex-container">
                 <button class="menuButtons" :disabled="playerArray.length < 1" v-on:click="rulesOverlayVisible = true">Regler</button>
@@ -195,6 +197,10 @@ export default defineComponent({
             left: 0; display: flex; align-items: center; 
             justify-content: center; ">
             <PlayerCreationOverlay />
+        </div>
+
+        <div v-if="rulesOverlayVisible" style="height: 100vh; width: 100vw; top: 0; left: 0; margin: 0; align-items: center" class="flex-container">
+            <RuleOverlay/>
         </div>
 
         <div v-if="pointsOverlayVisible" style="height: 100vh; width: 100vw; top: 0; left: 0; margin: 0; align-items: center" class="flex-container">
