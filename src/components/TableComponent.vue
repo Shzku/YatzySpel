@@ -62,7 +62,8 @@ export default {
 <div class="tableContainer" style="height: fit-content;">
     <div class="overlayReturnButton">
         <button class="material-icons backButton" v-on:click="$parent.pointsOverlayVisible = false">arrow_back</button>
-        <div style="text-align: center; align-self: center; width: 100%; font-size: xx-large;">Poäng</div>
+        <button class="swapOverlayButton" v-on:click="$parent.infoboxToggle = true;">Regler</button>
+        <div class="overlayTitle">Poäng</div>
     </div>
     <table>
         <tr>
@@ -227,6 +228,20 @@ export default {
 <style>
 @import '../assets/base.css';
 
+.swapOverlayButton {
+    visibility: hidden;
+    width: 0%;
+    padding: 0;
+    border: 0;
+}
+
+.overlayTitle {
+    text-align: center;
+    align-self: center;
+    width: 100%;
+    font-size: xx-large;
+}
+
 .backButton {
     background-color: var(--colour-button-background-alt);
     border: none;
@@ -255,16 +270,6 @@ export default {
     color: var(--colour-text);
     font-size: 1.3em;
 }
-/*
-button:not(.backButton .toggleButton) {
-    width: 100%;
-    height: 100%;
-    background-color: var(--colour-button-background-alt);
-    border: none;
-    color: var(--colour-text);
-    font-size: 1.3em;
-    font-family: 'Inter', sans-serif;
-}*/
 
 .scoreField > button {
     width: 100%;
@@ -300,6 +305,39 @@ td {
     /*border-bottom: 1px white solid;*/
     /*border-radius: 10px;*/
     padding: 1px 3px;
+}
+
+@media screen and (min-width: 800px) {
+    .backButton {
+        visibility: hidden;
+        width: 0%;
+        padding: 0;
+        border: 0;
+    }
+
+    .swapOverlayButton {
+        visibility: visible;
+        background-color: var(--colour-button-background-alt);
+        border: none;
+        border-right: 5px solid var(--colour-button-border);
+        color: var(--colour-button-text);
+        width: 50%;
+        height: 7vh;
+        font-size: xx-large;
+    }
+
+    .overlayTitle {
+        width: 50%;
+    }
+
+    .tableContainer {
+        width: 100%;
+        margin-left: 20px;
+    }
+
+    .overlayReturnButton {
+        width: 100%;
+    }
 }
 
 </style>

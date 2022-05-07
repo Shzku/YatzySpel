@@ -61,6 +61,7 @@ export default defineComponent({
             currentDice: [0, 0, 0, 0, 0, 0],
             pointsOverlayVisible: false,
             rulesOverlayVisible: false,
+            infoboxToggle: false,
         }
     },
     components: {
@@ -181,6 +182,10 @@ export default defineComponent({
                     <DiceComponent ref="dice5" />
                 </div>
                 <br>
+                <div style="width: auto; top: 0; left: 0; margin: 0; align-items: center" class="InfoBox">
+                    <RuleOverlay v-if="infoboxToggle"/>
+                    <TableComp v-if="!infoboxToggle"/>
+                </div>
                 <div class="iDontLikeFlexboxAnymore">
                     <button v-on:click="playerRoll()" :disabled="playerThrows < 1 || playerArray.length < 1"
                         class="menuButtons" v-bind:class="{ disabled: playerThrows == 0 }"
@@ -212,6 +217,15 @@ export default defineComponent({
 <style>
 @import '../assets/base.css';
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+.InfoBox {
+    margin: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    visibility: hidden;
+    height: 0px;
+}
 
 .blurred {
     filter: blur(2px) brightness(70%);
@@ -267,4 +281,38 @@ export default defineComponent({
     flex-wrap: wrap;
     align-items: center;
 }
+
+@media screen and (min-width: 800px) {
+    .flex-container {
+        visibility: hidden;
+        height: 0;
+        margin: 0;
+    }
+
+    .flex-container-2 {
+        flex-direction: column;
+        float: right;
+        height: 100%;
+        justify-content: space-evenly;
+    }
+
+    .flex-container-3 {
+        display: contents;
+        width: 100vw;
+    }
+
+    .iDontLikeFlexboxAnymore {
+        flex-direction: row-reverse;
+        justify-content: center;
+        bottom: 0;
+    }
+
+    .InfoBox {
+        align-items: flex-start;
+        visibility: visible;
+        margin: 10px;
+        height: 83vh;
+    }
+}
+
 </style>

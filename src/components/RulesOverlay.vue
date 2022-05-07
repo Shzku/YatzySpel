@@ -7,13 +7,13 @@ export default {
 </script>
 
 <template>
-    <div class="tableContainer" style="height: fit-content;">
-        <div class="overlayReturnButton">
-            <button class="material-icons backButton" v-on:click="$parent.rulesOverlayVisible = false">arrow_back</button>
-            <div style="text-align: center; align-self: center; width: 100%; font-size: xx-large;">Regler</div>
+    <div class="tableContainer2" style="height: fit-content;">
+        <div class="overlayReturnButton2">
+            <button class="material-icons backButton2" v-on:click="$parent.rulesOverlayVisible = false">arrow_back</button>
+            <div class="overlayTitle">Regler</div>
+            <button class="swapOverlayButton2" v-on:click="$parent.infoboxToggle = false;">Poäng</button>
         </div>
-        
-        <p style="width: 86vw; text-align: center; overflow: scroll; height: 80vh; font-size: 1.1em;">
+        <p class="textBlock" style=" text-align: center; overflow: scroll; font-size: 1.1em;">
             I Yatzy så används 5 st tärningar. En variant av Yatzy finns som heter Maxi-Yatzy - och då används istället
             6 st tärningar. <br>
             Varje spelare får 5 st tärningar där man får kasta totalt 3 st kast per omgång. Målet är att försöka få så
@@ -44,7 +44,19 @@ export default {
 <style>
 @import '../assets/base.css';
 
-.backButton {
+.textBlock {
+    height: 80vh;
+    width: 86vw;
+}
+
+.swapOverlayButton2 {
+    visibility: hidden;
+    width: 0%;
+    padding: 0;
+    border: 0;
+}
+
+.backButton2 {
     background-color: var(--colour-button-background-alt);
     border: none;
     border-right: 5px solid var(--colour-button-border);
@@ -54,7 +66,7 @@ export default {
     font-size: 2em;
 }
 
-.overlayReturnButton {
+.overlayReturnButton2 {
     display: flex;
     flex-direction: row;
     border: 5px solid var(--colour-button-border);
@@ -64,12 +76,48 @@ export default {
     width: 86vw;
 }
 
-.tableContainer {
+.tableContainer2 {
     background-color: var(--colour-container-background);
     padding: 10px;
     border-radius: 10px;
     width: fit-content;
     color: var(--colour-text);
     font-size: 1.3em;
+}
+
+@media screen and (min-width: 800px) {
+    .backButton2 {
+        visibility: hidden;
+        width: 0%;
+        padding: 0;
+        border: 0;
+    }
+
+    .swapOverlayButton2 {
+        visibility: visible;
+        background-color: var(--colour-button-background-alt);
+        border: none;
+        border-left: 5px solid var(--colour-button-border);
+        color: var(--colour-button-text);
+        width: 50%;
+        height: 7vh;
+        font-size: xx-large;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .tableContainer2 {
+        width: 100%;
+        margin-left: 20px;
+    }
+
+    .overlayReturnButton2 {
+        width: 100%;
+    }
+
+    .textBlock {
+        height: fit-content;
+        width: 100%;
+    }
 }
 </style>

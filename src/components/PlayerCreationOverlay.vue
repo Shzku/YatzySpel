@@ -155,8 +155,14 @@ input {
     background-color: var(--colour-button-selected);
 }
 
-.overlayContainer > * {
+@media screen and (min-width: 800px) {
+    .overlayContainer {
+        width: fit-content;
+    }
 
+    .toggleButton {
+        height: 6vh;
+    }
 }
 
 </style>
