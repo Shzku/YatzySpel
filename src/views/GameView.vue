@@ -211,7 +211,7 @@ export default defineComponent({
 
 <style>
 @import '../assets/base.css';
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
 .blurred {
     filter: blur(2px) brightness(70%);
